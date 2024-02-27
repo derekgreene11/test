@@ -81,3 +81,4 @@ list = []
 index = 0
 product = Product("name", "price", 0, "quantity")
 menu()
+#test
