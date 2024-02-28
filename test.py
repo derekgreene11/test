@@ -8,24 +8,31 @@ class Product:
         self.name = name
     
     def getProductInfo(self):
-            if len(listcpy) >= 1:
-                for self in listcpy:
-                    print("Name: ", self.name, "\nPrice: ", self.price, "\nQuantity: ", self.quantity, "\nProduct ID: ", self.id,"\n")
+        if len(list) >= 1:
+            for self in list:
+                print("Name: ", self.name, "\nPrice: ", self.price, "\nQuantity: ", self.quantity.rstrip('\n'), "\nProduct ID: ", self.id, "\n")
             else:
                 print("No products to display!")
          
     def addProduct(self, list):
-        product = Product(name = input("Enter product name: ") + " ", price = input("Enter price: ") + " ", id = len(listcpy) + 1, quantity = " " + input("Enter the quantity: " + " "))
-        print("Product ID: ", len(listcpy) + 1)
+        product = Product(name = input("Enter product name: "), price = input("Enter price: "), id = int(index1 + 1), quantity = input("Enter the quantity: "))
         list.append(product)
-        listcpy.append(product)
-    
+        
     def removeProduct(self):
         index = int(input("Enter the product ID of the product to remove: "))
-        if 0 <= index < len(listcpy):
-            print("Product removed!")
+        if 0 < index:
+            with open(filePath,'rb') as read_file:
+                lines = read_file.readlines()
+                currentLine = 1
+            with open(filePath,'wb') as write_file:
+                for line in lines:
+                    if currentLine == index:
+                        pass
+                    else:
+                        write_file.write(line)
+                    currentLine += 1
         else:
-            print("Product ID entered does not exist!")
+            print("Product ID entered does not exist!")          
             
     def changeQuantity(self):
         newQuantity = (input("Enter the product ID of the product to update: "))
@@ -36,22 +43,28 @@ class Product:
             print("Product ID entered does not exist!")
 
     def saveTofile(self):
+        os.remove(filePath)
         for self in list:
-            stringArr = [self.name, self.price, str(self.id), self.quantity, "\n"]
+            stringArr = [self.name, " ", self.price, " ", str(self.id), " ", self.quantity.rstrip('\n'), "\n"]
+            print(stringArr)
             with open(filePath, "ab") as file:
                 for string in stringArr:
                     byteArray = string.encode()
                     file.write(byteArray)
             file.close()
-        del list[:]
     
 def loadFromFile():
+    i = 0
     with open(filePath, "rb") as file:
         for string in file:
             byteArray = string.decode()
             data = byteArray.split(" ", 4)
-            listcpy.append(Product(data[0], data[1], data[2], data[3]))
-    file.close()     
+            list.append(Product(data[0], data[1], data[2], data[3]))
+            i = i + 1
+    file.close() 
+    global index1 
+    index1 = int(list[i-1].id)
+    return index1
                 
 def menu():
     os.system('cls')
@@ -107,7 +120,6 @@ def menu():
 
 filePath = "product.bin"       
 list = []
-listcpy = []
 product = Product("name", "price", 0, "quantity")
 
 loadFromFile()
