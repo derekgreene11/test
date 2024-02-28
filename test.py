@@ -8,31 +8,50 @@ class Product:
         self.name = name
     
     def getProductInfo(self):
-        if len(list) >= 1:
-            for self in list:
-                print("Name: ", self.name, "\nPrice: ", self.price, "\nQuantity: ", self.quantity, "\nProduct ID: ", self.id,"\n")
-        else:
-            print("No products to display!")
+            if len(listcpy) >= 1:
+                for self in listcpy:
+                    print("Name: ", self.name, "\nPrice: ", self.price, "\nQuantity: ", self.quantity, "\nProduct ID: ", self.id,"\n")
+            else:
+                print("No products to display!")
          
     def addProduct(self, list):
-        product = Product(name = input("Enter product name: "), price = input("Enter price: "), id = len(list), quantity = input("Enter the quantity: "))
-        print("Product ID: ", len(list))
+        product = Product(name = input("Enter product name: ") + " ", price = input("Enter price: ") + " ", id = len(listcpy) + 1, quantity = " " + input("Enter the quantity: " + " "))
+        print("Product ID: ", len(listcpy) + 1)
         list.append(product)
+        listcpy.append(product)
     
     def removeProduct(self):
-        index = (int(input("Enter the product ID of the product to remove: ")))
-        if 0 <= index < len(list):
-            del list[index]
+        index = int(input("Enter the product ID of the product to remove: "))
+        if 0 <= index < len(listcpy):
+            print("Product removed!")
         else:
             print("Product ID entered does not exist!")
             
     def changeQuantity(self):
-        newQuantity = int(input("Enter the product ID of the product to update: "))
+        newQuantity = (input("Enter the product ID of the product to update: "))
         if 0 <= newQuantity < len(list):
             productUpdate = input("Enter new quantity: ")
             list[newQuantity].quantity = productUpdate
         else:
             print("Product ID entered does not exist!")
+
+    def saveTofile(self):
+        for self in list:
+            stringArr = [self.name, self.price, str(self.id), self.quantity, "\n"]
+            with open(filePath, "ab") as file:
+                for string in stringArr:
+                    byteArray = string.encode()
+                    file.write(byteArray)
+            file.close()
+        del list[:]
+    
+def loadFromFile():
+    with open(filePath, "rb") as file:
+        for string in file:
+            byteArray = string.decode()
+            data = byteArray.split(" ", 4)
+            listcpy.append(Product(data[0], data[1], data[2], data[3]))
+    file.close()     
                 
 def menu():
     os.system('cls')
@@ -42,7 +61,8 @@ def menu():
     print("2: Add Product")
     print("3: Remove Product")
     print("4: Change Quantity")
-    print("5: Exit\n")
+    print("5: Save File")
+    print("6: Exit\n")
     
     choice = input("")
     while choice != 5:
@@ -71,14 +91,24 @@ def menu():
                 input("Press any key to continue... ")
                 os.system("cls")
                 menu()
-            case "5": 
+            case "5":
                 os.system('cls')
+                product.saveTofile()
+                print("File saved!")
+                input("Press any key to continue... ")
+                os.system('cls')
+                menu()
+            case "6": 
+                os.system('cls')
+                product.saveTofile()
                 print("Goodbye!")
                 break
         return 0
-         
+
+filePath = "product.bin"       
 list = []
-index = 0
+listcpy = []
 product = Product("name", "price", 0, "quantity")
+
+loadFromFile()
 menu()
-#test
