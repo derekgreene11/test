@@ -13,9 +13,7 @@ class Product:
         if len(list) >= 1:
             for self in list:
                 print(f"{Fore.LIGHTCYAN_EX}{Style.NORMAL}Name: ", f"{Fore.CYAN}", self.name, f"{Style.RESET_ALL}{Fore.LIGHTGREEN_EX}{Style.NORMAL}\nPrice: ", f"{Fore.GREEN}", self.price, f"{Style.RESET_ALL}{Fore.LIGHTMAGENTA_EX}\nQuantity: ", f"{Fore.MAGENTA}", self.quantity.rstrip('\n'), f"{Style.RESET_ALL}{Fore.LIGHTYELLOW_EX}\nProduct ID: ", f"{Fore.YELLOW}", self.id, f"{Style.RESET_ALL}", "\n")
-        #else:
-            #print(f"{Fore.RED}No products to display!{Style.RESET_ALL}")
-         
+       
     def addProduct(self, list):
         product = Product(name = input(f"{Fore.BLUE}Enter product name: "), price = "$" + input(f"Enter price: {Fore.GREEN}$"), id = int(index1 + 1), quantity = input(f"{Fore.BLUE}Enter the quantity: {Fore.MAGENTA}"))
         list.append(product)
